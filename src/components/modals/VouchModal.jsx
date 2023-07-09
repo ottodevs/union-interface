@@ -106,6 +106,13 @@ export default function VouchModal({
             <>
               <Input
                 mt="16px"
+                type="text"
+                errowwr={errors.trustwd}
+                label="Message"
+              />
+
+              <Input
+                mt="16px"
                 type="number"
                 suffix={<Dai />}
                 error={errors.trust}

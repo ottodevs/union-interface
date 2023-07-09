@@ -96,13 +96,13 @@ export default function AccountModal() {
         <Card.Footer direction="vertical" fluid>
           <Box fluid justify="space-between" align="center" mb="12px">
             <Text m={0} size="medium" weight="medium" grey={700}>
-              Wallet Activity
+              Activity
             </Text>
             <Button
               size="pill"
               color="secondary"
               variant="light"
-              label="Clear activity"
+              label="Clear"
               onClick={clearLogs}
             />
           </Box>
@@ -113,30 +113,53 @@ export default function AccountModal() {
                 No activity logs
               </Text>
             ) : (
-              logs.map(({ txHash, status, label, value }) => (
-                <Box key={txHash} align="center" justify="space-between" fluid>
-                  <Box align="center">
+              logs.map(({ txHash, status, label, value, message, timestamp }) => {
+
+                const options = {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                  hour: 'numeric',
+                  minute: '2-digit'
+                };
+
+                const formattedDate = new Date(timestamp).toLocaleString('en-US', options);
+
+                return (
+                <Box key={txHash} align="left" direction="horizontal" justify="space-between">
+                  <Box align="start">
                     <div className="AccountModal__Activity__statusIcon">
                       {status === Status.SUCCESS ? (
-                        <SuccessIcon width="20px" />
+                        <SuccessIcon width="30px" />
                       ) : (
-                        <FailedIcon width="20px" />
+                        <FailedIcon width="30px" />
                       )}
                     </div>
-                    <Text size="medium" weight="medium" grey={500} m={0}>
-                      {label}
-                    </Text>
+
                   </Box>
-                  <Box align="center">
+                  <Box align="left" direction="vertical" style={{flex: 1}}>
+
+                    <Text size="medium" weight="medium" grey={500} m={0}>
+                      {label} <a href="#" target="_blank">
+                      <LinkOutIcon width="14px" />
+                    </a>
+                    </Text>
+                    {timestamp && <Text size="small" weight="medium" grey={500}>
+                      <br />
+                      {formattedDate}
+                    </Text>}
+                    {message && <Text size="medium" weight="medium" grey={500} m={0}>
+                      {message}
+                    </Text>}
+
+                  </Box>
+                  <Box align="right">
                     <Text size="medium" weight="medium" m={0} mr="5px" grey={700}>
                       {format(value)}
                     </Text>
-                    <a href="#" target="_blank">
-                      <LinkOutIcon width="16px" />
-                    </a>
                   </Box>
                 </Box>
-              ))
+              )})
             )}
           </Box>
         </Card.Footer>
